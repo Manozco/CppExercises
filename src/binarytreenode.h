@@ -52,6 +52,14 @@ public:
         _right = right;
     }
 
+    BinaryTreeNode<T> *parent() const{
+        return _parent;
+    }
+
+    void setParent(BinaryTreeNode<T> *parent){
+        _parent = parent;
+    }
+
     bool switchNode(BinaryTreeNode<T> *node) {
         if (nullptr == node)
             return false;
@@ -72,13 +80,23 @@ public:
                   << std::endl;
     }
 
-    BinaryTreeNode<T> *parent() const{
-        return _parent;
+    BinaryTreeNode<T> *grandParent() {
+        if (this->_parent != nullptr)
+            return this->_parent->parent();
+        else
+            return NULL;
     }
 
-    void setParent(BinaryTreeNode<T> *parent){
-        _parent = parent;
+    BinaryTreeNode<T> *uncle() {
+        BinaryTreeNode<T> *g = grandParent();
+        if (g == nullptr)
+            return nullptr; // No grandparent means no uncle
+        if (this->_parent == g->left())
+            return g->right();
+        else
+            return g->left();
     }
+
 
 private:
     T _data;
