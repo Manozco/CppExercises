@@ -1,6 +1,6 @@
 set(LIB_SRCS
-    binarysearchtree.h
-    binarytreenode.h
+    bsearchtree.h
+    btreenode.h
     linkedlist.h
     linkedlistelement.h
 )

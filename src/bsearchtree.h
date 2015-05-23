@@ -3,27 +3,27 @@
 
 #include <functional>
 
-#include "binarytreenode.h"
+#include "btreenode.h"
 
 template<typename T>
-class BinarySearchTree
+class BSearchTree
 {
 public:
-    typedef std::function<void(const BinaryTreeNode<T> *const)> TraversalFunc;
-    BinarySearchTree(T rootData) {
-        _root = new BinaryTreeNode<T>(rootData);
+    typedef std::function<void(const BTreeNode<T> *const)> TraversalFunc;
+    BSearchTree(T rootData) {
+        _root = new BTreeNode<T>(rootData);
     }
 
-    BinarySearchTree(BinaryTreeNode<T> *nodeRoot) {
+    BSearchTree(BTreeNode<T> *nodeRoot) {
         _root = nodeRoot;
     }
 
-    BinaryTreeNode<T> *root() const {
+    BTreeNode<T> *root() const {
         return _root;
     }
 
-    BinaryTreeNode<T> *find(T data) {
-        BinaryTreeNode<T> *curNode = _root;
+    BTreeNode<T> *find(T data) {
+        BTreeNode<T> *curNode = _root;
         while (nullptr != curNode) {
             if (curNode->data() == data)
                 return curNode;
@@ -36,9 +36,9 @@ public:
     }
 
     bool insert(T data) {
-        BinaryTreeNode<T> *curNode = _root;
-        BinaryTreeNode<T> *parent = nullptr;
-        BinaryTreeNode<T> *nodeToInsert = new BinaryTreeNode<T>(data);
+        BTreeNode<T> *curNode = _root;
+        BTreeNode<T> *parent = nullptr;
+        BTreeNode<T> *nodeToInsert = new BTreeNode<T>(data);
         while (nullptr != curNode) {
             // We insert on the left if it is equal
             if (data == curNode->data()) {
@@ -66,7 +66,7 @@ public:
         return true;
     }
 
-    bool deleteNode (BinaryTreeNode<T> *nodeToDelete, int counter=0) {
+    bool deleteNode (BTreeNode<T> *nodeToDelete, int counter=0) {
         if (nullptr == nodeToDelete) {
             return false;
         } else {
@@ -85,8 +85,8 @@ public:
                 nodeToDelete->setLeft(nullptr);
                 return true;
             } else {
-                BinaryTreeNode<T> *inOrderSuccessor = BinarySearchTree<T>(nodeToDelete->right()).min();
-                BinaryTreeNode<T> *inOrderPredecessor = BinarySearchTree<T>(nodeToDelete->left()).max();
+                BTreeNode<T> *inOrderSuccessor = BSearchTree<T>(nodeToDelete->right()).min();
+                BTreeNode<T> *inOrderPredecessor = BSearchTree<T>(nodeToDelete->left()).max();
                 if (inOrderPredecessor && inOrderPredecessor) {
                     if (counter % 2 == 0) {
                         nodeToDelete->setData(inOrderSuccessor->data());
@@ -110,26 +110,26 @@ public:
     void preorderTraversal(TraversalFunc func) {
         func(_root);
         if (_root->left())
-            BinarySearchTree(_root->left()).preorderTraversal(func);
+            BSearchTree(_root->left()).preorderTraversal(func);
         if (_root->right())
-            BinarySearchTree(_root->right()).preorderTraversal(func);
+            BSearchTree(_root->right()).preorderTraversal(func);
     }
 
     void print() {
-        auto lambda = [](const BinaryTreeNode<T> *const node) {node->printNode();};
+        auto lambda = [](const BTreeNode<T> *const node) {node->printNode();};
         this->preorderTraversal(lambda);
     }
 
-    BinaryTreeNode<T> *min() {
-        BinaryTreeNode<T> *cur_node = _root;
+    BTreeNode<T> *min() {
+        BTreeNode<T> *cur_node = _root;
         while (cur_node->left()) {
             cur_node = cur_node->left();
         }
         return cur_node;
     }
 
-    BinaryTreeNode<T> *max() {
-        BinaryTreeNode<T> *cur_node = _root;
+    BTreeNode<T> *max() {
+        BTreeNode<T> *cur_node = _root;
         while (cur_node->right()) {
             cur_node = cur_node->right();
         }
@@ -138,7 +138,7 @@ public:
 
 
 private:
-    BinaryTreeNode<T> *_root;
+    BTreeNode<T> *_root;
 };
 
 #endif // BINARYTREE_H

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "src/linkedlist.h"
-#include "src/binarysearchtree.h"
+#include "src/bsearchtree.h"
 
 int main()
 {
@@ -13,7 +13,7 @@ int main()
     l->deleteElement(5);
     l->print();
     std::cout << "============" << std::endl;
-    BinarySearchTree<int> t(5);
+    BSearchTree<int> t(5);
     t.insert(40);
     t.insert(60);
     t.insert(-10);
