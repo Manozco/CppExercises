@@ -3,14 +3,11 @@
 #include <string>
 #include <iostream>
 
-
-//class BinarySearchTree;
-
 template<typename T>
 class BTreeNode
 {
 public:
-    BTreeNode(T data, BTreeNode<T> *left=nullptr, BTreeNode<T> *right=nullptr, BTreeNode<T> *parent=nullptr)
+    BTreeNode(T data=nullptr, BTreeNode<T> *left=nullptr, BTreeNode<T> *right=nullptr, BTreeNode<T> *parent=nullptr)
         : _data(data)
         , _left(left)
         , _right(right)
@@ -98,7 +95,7 @@ public:
     }
 
 
-private:
+protected:
     T _data;
     BTreeNode<T> *_left;
     BTreeNode<T> *_right;

@@ -2,7 +2,6 @@
 #define BINARYTREE_H
 
 #include <functional>
-
 #include "btreenode.h"
 
 template<typename T>
@@ -10,6 +9,9 @@ class BSearchTree
 {
 public:
     typedef std::function<void(const BTreeNode<T> *const)> TraversalFunc;
+    BSearchTree() {
+        _root = nullptr;
+    }
     BSearchTree(T rootData) {
         _root = new BTreeNode<T>(rootData);
     }
@@ -36,34 +38,8 @@ public:
     }
 
     bool insert(T data) {
-        BTreeNode<T> *curNode = _root;
-        BTreeNode<T> *parent = nullptr;
         BTreeNode<T> *nodeToInsert = new BTreeNode<T>(data);
-        while (nullptr != curNode) {
-            // We insert on the left if it is equal
-            if (data == curNode->data()) {
-                nodeToInsert->setLeft(curNode->left());
-                nodeToInsert->setParent(curNode);
-                curNode->setLeft(nodeToInsert);
-                return true;
-            } else if (data >= curNode->data()) {
-                parent = curNode;
-                curNode = curNode->right();
-            } else if (data <= curNode->data()) {
-                parent = curNode;
-                curNode = curNode->left();
-            }
-        }
-        if (parent) {
-            if (data <= parent->data()) {
-                parent->setLeft(nodeToInsert);
-                nodeToInsert->setParent(parent);
-            } else {
-                parent->setRight(nodeToInsert);
-                nodeToInsert->setParent(parent);
-            }
-        }
-        return true;
+        return _insert(nodeToInsert);
     }
 
     bool deleteNode (BTreeNode<T> *nodeToDelete, int counter=0) {
@@ -136,8 +112,43 @@ public:
         return cur_node;
     }
 
+protected:
+    bool _insert(BTreeNode<T> *nodeToInsert) {
+        BTreeNode<T> *curNode = _root;
+        BTreeNode<T> *parent = nullptr;
+        T data = nodeToInsert->data();
+        if (curNode == nullptr) {
+            _root = nodeToInsert;
+            return true;
+        }
+        while (nullptr != curNode) {
+            // We insert on the left if it is equal
+            if (data == curNode->data()) {
+                nodeToInsert->setLeft(curNode->left());
+                nodeToInsert->setParent(curNode);
+                curNode->setLeft(nodeToInsert);
+                return true;
+            } else if (data >= curNode->data()) {
+                parent = curNode;
+                curNode = curNode->right();
+            } else if (data <= curNode->data()) {
+                parent = curNode;
+                curNode = curNode->left();
+            }
+        }
+        if (parent) {
+            if (data <= parent->data()) {
+                parent->setLeft(nodeToInsert);
+                nodeToInsert->setParent(parent);
+            } else {
+                parent->setRight(nodeToInsert);
+                nodeToInsert->setParent(parent);
+            }
+        }
+        return true;
+    }
 
-private:
+protected:
     BTreeNode<T> *_root;
 };
 
